@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "1058308240936",
+    "project_id": "inptic-apps-cc69a",
+    "storage_bucket": "inptic-apps-cc69a.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058308240936:android:e0c257f1e9303883af271d",
+        "android_client_info": {
+          "package_name": "com.mycompany.journalinptic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdck3EM1A3dgDMFXoy4-dLZk0Vv_KZ4w4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1058308240936:android:1347fc86eb6d92eeaf271d",
+        "android_client_info": {
+          "package_name": "com.mycompany.journalinpticadmin"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCdck3EM1A3dgDMFXoy4-dLZk0Vv_KZ4w4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

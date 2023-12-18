@@ -1,0 +1,18 @@
+{
+  "indexes": [
+    {
+      "collectionGroup": "Commentaire",
+      "queryScope": "COLLECTION",
+      "fields": [
+        {
+          "fieldPath": "refSectionCom",
+          "order": "ASCENDING"
+        },
+        {
+          "fieldPath": "date",
+          "order": "DESCENDING"
+        }
+      ]
+    }
+  ]
+}
