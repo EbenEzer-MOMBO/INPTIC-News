@@ -1,7 +1,6 @@
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -10,12 +9,12 @@ export 'article_medium_model.dart';
 
 class ArticleMediumWidget extends StatefulWidget {
   const ArticleMediumWidget({
-    Key? key,
+    super.key,
     required this.image,
     required this.titre,
     required this.date,
     required this.favori,
-  }) : super(key: key);
+  });
 
   final String? image;
   final String? titre;
@@ -23,7 +22,7 @@ class ArticleMediumWidget extends StatefulWidget {
   final bool? favori;
 
   @override
-  _ArticleMediumWidgetState createState() => _ArticleMediumWidgetState();
+  State<ArticleMediumWidget> createState() => _ArticleMediumWidgetState();
 }
 
 class _ArticleMediumWidgetState extends State<ArticleMediumWidget> {

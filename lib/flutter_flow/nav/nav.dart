@@ -116,12 +116,7 @@ GoRouter createRouter(AppStateNotifier appStateNotifier) => GoRouter(
         FFRoute(
           name: 'Parametres',
           path: '/parametres',
-          builder: (context, params) => ParametresWidget(
-            nom: params.getParam('nom', ParamType.String),
-            prenom: params.getParam('prenom', ParamType.String),
-            email: params.getParam('email', ParamType.String),
-            image: params.getParam('image', ParamType.String),
-          ),
+          builder: (context, params) => ParametresWidget(),
         ),
         FFRoute(
           name: 'Favoris',
@@ -318,6 +313,7 @@ class FFRoute {
           return null;
         },
         pageBuilder: (context, state) {
+          fixStatusBarOniOS16AndBelow(context);
           final ffParams = FFParameters(state, asyncParams);
           final page = ffParams.hasFutures
               ? FutureBuilder(
@@ -326,13 +322,13 @@ class FFRoute {
                 )
               : builder(context, ffParams);
           final child = appStateNotifier.loading
-              ? Center(
-                  child: SizedBox(
-                    width: 50.0,
-                    height: 50.0,
-                    child: SpinKitWanderingCubes(
-                      color: FlutterFlowTheme.of(context).primary,
-                      size: 50.0,
+              ? Container(
+                  color: FlutterFlowTheme.of(context).secondaryBackground,
+                  child: Center(
+                    child: Image.asset(
+                      'assets/images/logoinptic.png',
+                      width: 185.0,
+                      fit: BoxFit.contain,
                     ),
                   ),
                 )

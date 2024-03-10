@@ -3,30 +3,32 @@ import '/backend/backend.dart';
 import '/composants/section_commentaire/section_commentaire_widget.dart';
 import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
+import '/flutter_flow/flutter_flow_toggle_icon.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import '/custom_code/actions/index.dart' as actions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
+import 'package:flutter/scheduler.dart';
 import 'package:flutter_html/flutter_html.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:just_audio/just_audio.dart';
 import 'package:provider/provider.dart';
 import 'details_model.dart';
 export 'details_model.dart';
 
 class DetailsWidget extends StatefulWidget {
   const DetailsWidget({
-    Key? key,
+    super.key,
     required this.refArticle,
-  }) : super(key: key);
+  });
 
   final DocumentReference? refArticle;
 
   @override
-  _DetailsWidgetState createState() => _DetailsWidgetState();
+  State<DetailsWidget> createState() => _DetailsWidgetState();
 }
 
 class _DetailsWidgetState extends State<DetailsWidget> {
@@ -38,6 +40,26 @@ class _DetailsWidgetState extends State<DetailsWidget> {
   void initState() {
     super.initState();
     _model = createModel(context, () => DetailsModel());
+
+    // On page load action.
+    SchedulerBinding.instance.addPostFrameCallback((_) async {
+      await actions.estVu(
+        currentUserReference!.id,
+        widget.refArticle!,
+      );
+      _model.isFavorite = await actions.estFavoris(
+        currentUserReference!.id,
+        widget.refArticle!,
+      );
+      if (_model.isFavorite == true) {
+        setState(() {
+          _model.liked = true;
+        });
+        return;
+      } else {
+        return;
+      }
+    });
   }
 
   @override
@@ -49,15 +71,6 @@ class _DetailsWidgetState extends State<DetailsWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     return StreamBuilder<ArticleRecord>(
       stream: ArticleRecord.getDocument(widget.refArticle!),
       builder: (context, snapshot) {
@@ -240,8 +253,8 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                       ),
                                     ),
                                     RichText(
-                                      textScaleFactor: MediaQuery.of(context)
-                                          .textScaleFactor,
+                                      textScaler:
+                                          MediaQuery.of(context).textScaler,
                                       text: TextSpan(
                                         children: [
                                           TextSpan(
@@ -333,6 +346,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                         children: [
                           Html(
                             data: detailsArticleRecord.contenu,
+                            onLinkTap: (url, _, __, ___) => launchURL(url!),
                           ),
                         ],
                       ),
@@ -356,23 +370,25 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                 child: Row(
                                   mainAxisSize: MainAxisSize.max,
                                   children: [
-                                    FlutterFlowIconButton(
-                                      borderColor: Colors.transparent,
-                                      borderRadius: 20.0,
-                                      borderWidth: 1.0,
-                                      buttonSize: 40.0,
-                                      icon: Icon(
-                                        Icons.favorite_border,
-                                        color: FlutterFlowTheme.of(context)
-                                            .primaryText,
-                                        size: 24.0,
-                                      ),
+                                    ToggleIcon(
                                       onPressed: () async {
+                                        setState(
+                                            () => _model.liked = !_model.liked);
                                         _model.favoris =
                                             await actions.ajouterFavoris(
                                           currentUserReference!.id,
                                           detailsArticleRecord.reference,
                                         );
+                                        _model.soundPlayer ??= AudioPlayer();
+                                        if (_model.soundPlayer!.playing) {
+                                          await _model.soundPlayer!.stop();
+                                        }
+                                        _model.soundPlayer!.setVolume(1.0);
+                                        _model.soundPlayer!
+                                            .setAsset('assets/audios/pop.mp3')
+                                            .then((_) =>
+                                                _model.soundPlayer!.play());
+
                                         ScaffoldMessenger.of(context)
                                             .clearSnackBars();
                                         ScaffoldMessenger.of(context)
@@ -387,7 +403,7 @@ class _DetailsWidgetState extends State<DetailsWidget> {
                                               ),
                                             ),
                                             duration:
-                                                Duration(milliseconds: 4000),
+                                                Duration(milliseconds: 2000),
                                             backgroundColor:
                                                 FlutterFlowTheme.of(context)
                                                     .primary,
@@ -396,6 +412,19 @@ class _DetailsWidgetState extends State<DetailsWidget> {
 
                                         setState(() {});
                                       },
+                                      value: _model.liked,
+                                      onIcon: Icon(
+                                        Icons.favorite_rounded,
+                                        color:
+                                            FlutterFlowTheme.of(context).error,
+                                        size: 28.0,
+                                      ),
+                                      offIcon: Icon(
+                                        Icons.favorite_border_rounded,
+                                        color: FlutterFlowTheme.of(context)
+                                            .primaryText,
+                                        size: 28.0,
+                                      ),
                                     ),
                                     Expanded(
                                       child: Text(

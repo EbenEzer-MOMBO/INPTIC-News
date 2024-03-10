@@ -7,7 +7,6 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -15,10 +14,10 @@ import 'verification_email_model.dart';
 export 'verification_email_model.dart';
 
 class VerificationEmailWidget extends StatefulWidget {
-  const VerificationEmailWidget({Key? key}) : super(key: key);
+  const VerificationEmailWidget({super.key});
 
   @override
-  _VerificationEmailWidgetState createState() =>
+  State<VerificationEmailWidget> createState() =>
       _VerificationEmailWidgetState();
 }
 
@@ -44,15 +43,6 @@ class _VerificationEmailWidgetState extends State<VerificationEmailWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)

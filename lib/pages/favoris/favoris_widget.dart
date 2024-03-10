@@ -5,7 +5,6 @@ import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -13,10 +12,10 @@ import 'favoris_model.dart';
 export 'favoris_model.dart';
 
 class FavorisWidget extends StatefulWidget {
-  const FavorisWidget({Key? key}) : super(key: key);
+  const FavorisWidget({super.key});
 
   @override
-  _FavorisWidgetState createState() => _FavorisWidgetState();
+  State<FavorisWidget> createState() => _FavorisWidgetState();
 }
 
 class _FavorisWidgetState extends State<FavorisWidget> {
@@ -39,15 +38,6 @@ class _FavorisWidgetState extends State<FavorisWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -168,7 +158,7 @@ class _FavorisWidgetState extends State<FavorisWidget> {
                                 child: ClipRRect(
                                   borderRadius: BorderRadius.circular(4.0),
                                   child: Image.network(
-                                    'https://picsum.photos/seed/442/600',
+                                    imageArticleRecord.image,
                                     width: 321.0,
                                     height: 250.0,
                                     fit: BoxFit.cover,

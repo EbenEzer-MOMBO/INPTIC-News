@@ -50,8 +50,8 @@ class ReponseRecord extends FirestoreRecord {
           ? parent.collection('Reponse')
           : FirebaseFirestore.instance.collectionGroup('Reponse');
 
-  static DocumentReference createDoc(DocumentReference parent) =>
-      parent.collection('Reponse').doc();
+  static DocumentReference createDoc(DocumentReference parent, {String? id}) =>
+      parent.collection('Reponse').doc(id);
 
   static Stream<ReponseRecord> getDocument(DocumentReference ref) =>
       ref.snapshots().map((s) => ReponseRecord.fromSnapshot(s));

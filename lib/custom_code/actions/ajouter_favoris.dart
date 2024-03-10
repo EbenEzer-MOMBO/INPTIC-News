@@ -20,11 +20,19 @@ Future<String> ajouterFavoris(
   if (existingDocument.docs.isEmpty) {
     // Si le document n'existe pas, créez-le
     await favoriteCollectionRef.add({'refArticle': refArticle});
+    // Récupérer la référence de l'article
+    final articleDocSnapshot = await refArticle.get();
+    // Incrémenter le champ "Like"
+    await refArticle.update({'Like': FieldValue.increment(1)});
     return 'Ajouté aux favoris !';
   } else {
     // Si le document existe, supprimez-le
     final documentId = existingDocument.docs.first.id;
     await favoriteCollectionRef.doc(documentId).delete();
+    // Récupérer la référence de l'article
+    final articleDocSnapshot = await refArticle.get();
+    // Décrémenter le champ "Like"
+    await refArticle.update({'Like': FieldValue.increment(-1)});
     return 'Retiré des favoris !';
   }
 }

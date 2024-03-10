@@ -7,7 +7,6 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/custom_code/actions/index.dart' as actions;
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -16,16 +15,16 @@ export 'section_commentaire_model.dart';
 
 class SectionCommentaireWidget extends StatefulWidget {
   const SectionCommentaireWidget({
-    Key? key,
+    super.key,
     required this.refArticle,
     required this.refSectionCommentaire,
-  }) : super(key: key);
+  });
 
   final DocumentReference? refArticle;
   final DocumentReference? refSectionCommentaire;
 
   @override
-  _SectionCommentaireWidgetState createState() =>
+  State<SectionCommentaireWidget> createState() =>
       _SectionCommentaireWidgetState();
 }
 
@@ -171,6 +170,10 @@ class _SectionCommentaireWidgetState extends State<SectionCommentaireWidget> {
                                     nom: containerUserRecord.nom,
                                     prenom: containerUserRecord.prenom,
                                     texte: listViewCommentaireRecord.texte,
+                                    like: listViewCommentaireRecord.likes,
+                                    refComment:
+                                        listViewCommentaireRecord.reference,
+                                    date: listViewCommentaireRecord.date!,
                                   ),
                                 );
                               },
@@ -246,84 +249,114 @@ class _SectionCommentaireWidgetState extends State<SectionCommentaireWidget> {
                       ),
                       Expanded(
                         flex: 8,
-                        child: TextFormField(
-                          controller: _model.textController,
-                          focusNode: _model.textFieldFocusNode,
-                          autofocus: true,
-                          obscureText: false,
-                          decoration: InputDecoration(
-                            labelStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
+                        child: AuthUserStreamWidget(
+                          builder: (context) => TextFormField(
+                            controller: _model.textController,
+                            focusNode: _model.textFieldFocusNode,
+                            autofocus: true,
+                            readOnly: valueOrDefault(
+                                        currentUserDocument?.nom, '') ==
+                                    null ||
+                                valueOrDefault(currentUserDocument?.nom, '') ==
+                                    '',
+                            obscureText: false,
+                            decoration: InputDecoration(
+                              labelStyle: FlutterFlowTheme.of(context)
+                                  .labelMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    color: FlutterFlowTheme.of(context)
+                                        .primaryText,
+                                    fontSize: 16.0,
+                                  ),
+                              hintText: valueOrDefault(
+                                              currentUserDocument?.nom, '') !=
+                                          null &&
+                                      valueOrDefault(
+                                              currentUserDocument?.nom, '') !=
+                                          ''
+                                  ? 'Ajouter un commentaire ...'
+                                  : 'Crée un compte pour ajouter ...',
+                              hintStyle: FlutterFlowTheme.of(context)
+                                  .labelMedium
+                                  .override(
+                                    fontFamily: 'Readex Pro',
+                                    color: Color(0xFF9F9F9F),
+                                  ),
+                              enabledBorder: InputBorder.none,
+                              focusedBorder: InputBorder.none,
+                              errorBorder: InputBorder.none,
+                              focusedErrorBorder: InputBorder.none,
+                            ),
+                            style: FlutterFlowTheme.of(context)
+                                .bodyMedium
                                 .override(
                                   fontFamily: 'Readex Pro',
                                   color:
                                       FlutterFlowTheme.of(context).primaryText,
                                   fontSize: 16.0,
                                 ),
-                            hintText: 'Ajouter un commentaire ...',
-                            hintStyle: FlutterFlowTheme.of(context)
-                                .labelMedium
-                                .override(
-                                  fontFamily: 'Readex Pro',
-                                  color: Color(0xC114181B),
-                                ),
-                            enabledBorder: InputBorder.none,
-                            focusedBorder: InputBorder.none,
-                            errorBorder: InputBorder.none,
-                            focusedErrorBorder: InputBorder.none,
+                            validator: _model.textControllerValidator
+                                .asValidator(context),
                           ),
-                          style: FlutterFlowTheme.of(context)
-                              .bodyMedium
-                              .override(
-                                fontFamily: 'Readex Pro',
-                                color: FlutterFlowTheme.of(context).primaryText,
-                                fontSize: 16.0,
-                              ),
-                          validator: _model.textControllerValidator
-                              .asValidator(context),
                         ),
                       ),
-                      FlutterFlowIconButton(
-                        borderRadius: 12.0,
-                        borderWidth: 1.0,
-                        buttonSize: 40.0,
-                        icon: Icon(
-                          Icons.send_rounded,
-                          color: FlutterFlowTheme.of(context).primaryText,
-                          size: 24.0,
-                        ),
-                        onPressed: () async {
-                          if (_model.textController.text != null &&
-                              _model.textController.text != '') {
-                            await CommentaireRecord.collection.doc().set({
-                              ...createCommentaireRecordData(
-                                texte: _model.textController.text,
-                                likes: 0,
-                                refUtilisateur: currentUserReference,
-                                refSectionCom: widget.refSectionCommentaire,
-                              ),
-                              ...mapToFirestore(
-                                {
-                                  'date': FieldValue.serverTimestamp(),
-                                },
-                              ),
-                            });
-                            setState(() {
-                              _model.textController?.clear();
-                            });
+                      AuthUserStreamWidget(
+                        builder: (context) => FlutterFlowIconButton(
+                          borderRadius: 12.0,
+                          borderWidth: 1.0,
+                          buttonSize: 40.0,
+                          disabledIconColor:
+                              FlutterFlowTheme.of(context).alternate,
+                          icon: Icon(
+                            Icons.send_rounded,
+                            color: FlutterFlowTheme.of(context).primaryText,
+                            size: 24.0,
+                          ),
+                          onPressed: (valueOrDefault(
+                                          currentUserDocument?.nom, '') ==
+                                      null ||
+                                  valueOrDefault(
+                                          currentUserDocument?.nom, '') ==
+                                      '')
+                              ? null
+                              : () async {
+                                  if (_model.textController.text != null &&
+                                      _model.textController.text != '') {
+                                    await CommentaireRecord.collection
+                                        .doc()
+                                        .set({
+                                      ...createCommentaireRecordData(
+                                        texte: _model.textController.text,
+                                        likes: 0,
+                                        refUtilisateur: currentUserReference,
+                                        refSectionCom:
+                                            widget.refSectionCommentaire,
+                                      ),
+                                      ...mapToFirestore(
+                                        {
+                                          'date': FieldValue.serverTimestamp(),
+                                        },
+                                      ),
+                                    });
+                                    setState(() {
+                                      _model.textController?.clear();
+                                    });
 
-                            await widget.refSectionCommentaire!.update({
-                              ...mapToFirestore(
-                                {
-                                  'nbre_commentaire': FieldValue.increment(1),
+                                    await widget.refSectionCommentaire!.update({
+                                      ...mapToFirestore(
+                                        {
+                                          'nbre_commentaire':
+                                              FieldValue.increment(1),
+                                        },
+                                      ),
+                                    });
+                                    return;
+                                  } else {
+                                    return;
+                                  }
                                 },
-                              ),
-                            });
-                            return;
-                          } else {
-                            return;
-                          }
-                        },
+                        ),
                       ),
                     ].divide(SizedBox(width: 6.0)),
                   ),

@@ -32,8 +32,8 @@ class VuesRecord extends FirestoreRecord {
           ? parent.collection('vues')
           : FirebaseFirestore.instance.collectionGroup('vues');
 
-  static DocumentReference createDoc(DocumentReference parent) =>
-      parent.collection('vues').doc();
+  static DocumentReference createDoc(DocumentReference parent, {String? id}) =>
+      parent.collection('vues').doc(id);
 
   static Stream<VuesRecord> getDocument(DocumentReference ref) =>
       ref.snapshots().map((s) => VuesRecord.fromSnapshot(s));

@@ -3,7 +3,6 @@ import '/flutter_flow/flutter_flow_util.dart';
 import 'package:auto_size_text/auto_size_text.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -12,14 +11,14 @@ export 'article_small_model.dart';
 
 class ArticleSmallWidget extends StatefulWidget {
   const ArticleSmallWidget({
-    Key? key,
+    super.key,
     required this.image,
     required this.titre,
     required this.date,
     required this.favori,
     required this.categorie,
     required this.refArticle,
-  }) : super(key: key);
+  });
 
   final String? image;
   final String? titre;
@@ -29,7 +28,7 @@ class ArticleSmallWidget extends StatefulWidget {
   final DocumentReference? refArticle;
 
   @override
-  _ArticleSmallWidgetState createState() => _ArticleSmallWidgetState();
+  State<ArticleSmallWidget> createState() => _ArticleSmallWidgetState();
 }
 
 class _ArticleSmallWidgetState extends State<ArticleSmallWidget> {

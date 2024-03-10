@@ -16,15 +16,15 @@ class LikesRecord extends FirestoreRecord {
     _initializeFields();
   }
 
-  // "refArticle" field.
-  DocumentReference? _refArticle;
-  DocumentReference? get refArticle => _refArticle;
-  bool hasRefArticle() => _refArticle != null;
+  // "commentRef" field.
+  DocumentReference? _commentRef;
+  DocumentReference? get commentRef => _commentRef;
+  bool hasCommentRef() => _commentRef != null;
 
   DocumentReference get parentReference => reference.parent.parent!;
 
   void _initializeFields() {
-    _refArticle = snapshotData['refArticle'] as DocumentReference?;
+    _commentRef = snapshotData['commentRef'] as DocumentReference?;
   }
 
   static Query<Map<String, dynamic>> collection([DocumentReference? parent]) =>
@@ -32,8 +32,8 @@ class LikesRecord extends FirestoreRecord {
           ? parent.collection('likes')
           : FirebaseFirestore.instance.collectionGroup('likes');
 
-  static DocumentReference createDoc(DocumentReference parent) =>
-      parent.collection('likes').doc();
+  static DocumentReference createDoc(DocumentReference parent, {String? id}) =>
+      parent.collection('likes').doc(id);
 
   static Stream<LikesRecord> getDocument(DocumentReference ref) =>
       ref.snapshots().map((s) => LikesRecord.fromSnapshot(s));
@@ -66,11 +66,11 @@ class LikesRecord extends FirestoreRecord {
 }
 
 Map<String, dynamic> createLikesRecordData({
-  DocumentReference? refArticle,
+  DocumentReference? commentRef,
 }) {
   final firestoreData = mapToFirestore(
     <String, dynamic>{
-      'refArticle': refArticle,
+      'commentRef': commentRef,
     }.withoutNulls,
   );
 
@@ -82,11 +82,11 @@ class LikesRecordDocumentEquality implements Equality<LikesRecord> {
 
   @override
   bool equals(LikesRecord? e1, LikesRecord? e2) {
-    return e1?.refArticle == e2?.refArticle;
+    return e1?.commentRef == e2?.commentRef;
   }
 
   @override
-  int hash(LikesRecord? e) => const ListEquality().hash([e?.refArticle]);
+  int hash(LikesRecord? e) => const ListEquality().hash([e?.commentRef]);
 
   @override
   bool isValidKey(Object? o) => o is LikesRecord;

@@ -7,7 +7,6 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -15,10 +14,10 @@ import 'authentification_model.dart';
 export 'authentification_model.dart';
 
 class AuthentificationWidget extends StatefulWidget {
-  const AuthentificationWidget({Key? key}) : super(key: key);
+  const AuthentificationWidget({super.key});
 
   @override
-  _AuthentificationWidgetState createState() => _AuthentificationWidgetState();
+  State<AuthentificationWidget> createState() => _AuthentificationWidgetState();
 }
 
 class _AuthentificationWidgetState extends State<AuthentificationWidget>
@@ -61,15 +60,6 @@ class _AuthentificationWidgetState extends State<AuthentificationWidget>
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
@@ -152,6 +142,9 @@ class _AuthentificationWidgetState extends State<AuthentificationWidget>
                             ),
                           ],
                           controller: _model.tabBarController,
+                          onTap: (i) async {
+                            [() async {}, () async {}][i]();
+                          },
                         ),
                       ),
                       Expanded(
@@ -177,16 +170,37 @@ class _AuthentificationWidgetState extends State<AuthentificationWidget>
                                           Align(
                                             alignment:
                                                 AlignmentDirectional(0.0, 0.0),
-                                            child: Text(
-                                              'Bienvenu(e) ! ',
-                                              style: FlutterFlowTheme.of(
-                                                      context)
-                                                  .bodyMedium
-                                                  .override(
-                                                    fontFamily: 'Readex Pro',
-                                                    fontSize: 22.0,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
+                                            child: InkWell(
+                                              splashColor: Colors.transparent,
+                                              focusColor: Colors.transparent,
+                                              hoverColor: Colors.transparent,
+                                              highlightColor:
+                                                  Colors.transparent,
+                                              onTap: () async {
+                                                GoRouter.of(context)
+                                                    .prepareAuthEvent();
+                                                final user = await authManager
+                                                    .signInAnonymously(context);
+                                                if (user == null) {
+                                                  return;
+                                                }
+
+                                                context.goNamedAuth(
+                                                    'Accueil', context.mounted);
+                                              },
+                                              child: Text(
+                                                'Bienvenu(e) ! ',
+                                                style:
+                                                    FlutterFlowTheme.of(context)
+                                                        .bodyMedium
+                                                        .override(
+                                                          fontFamily:
+                                                              'Readex Pro',
+                                                          fontSize: 22.0,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
+                                              ),
                                             ),
                                           ),
                                           Align(

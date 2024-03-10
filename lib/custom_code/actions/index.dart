@@ -5,3 +5,7 @@ export 'ajouter_favoris.dart' show ajouterFavoris;
 export 'resend_email_verification.dart' show resendEmailVerification;
 export 'is_clean.dart' show isClean;
 export 'modifier_profil.dart' show modifierProfil;
+export 'est_favoris.dart' show estFavoris;
+export 'est_vu.dart' show estVu;
+export 'like_comment.dart' show likeComment;
+export 'est_like.dart' show estLike;

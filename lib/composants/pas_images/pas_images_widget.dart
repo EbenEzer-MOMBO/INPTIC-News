@@ -2,7 +2,6 @@ import '/flutter_flow/flutter_flow_icon_button.dart';
 import '/flutter_flow/flutter_flow_theme.dart';
 import '/flutter_flow/flutter_flow_util.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -10,10 +9,10 @@ import 'pas_images_model.dart';
 export 'pas_images_model.dart';
 
 class PasImagesWidget extends StatefulWidget {
-  const PasImagesWidget({Key? key}) : super(key: key);
+  const PasImagesWidget({super.key});
 
   @override
-  _PasImagesWidgetState createState() => _PasImagesWidgetState();
+  State<PasImagesWidget> createState() => _PasImagesWidgetState();
 }
 
 class _PasImagesWidgetState extends State<PasImagesWidget> {

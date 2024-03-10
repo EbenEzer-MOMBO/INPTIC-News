@@ -6,7 +6,6 @@ import '/flutter_flow/flutter_flow_util.dart';
 import '/flutter_flow/flutter_flow_widgets.dart';
 import 'package:easy_debounce/easy_debounce.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -15,10 +14,10 @@ import 'recherche_model.dart';
 export 'recherche_model.dart';
 
 class RechercheWidget extends StatefulWidget {
-  const RechercheWidget({Key? key}) : super(key: key);
+  const RechercheWidget({super.key});
 
   @override
-  _RechercheWidgetState createState() => _RechercheWidgetState();
+  State<RechercheWidget> createState() => _RechercheWidgetState();
 }
 
 class _RechercheWidgetState extends State<RechercheWidget> {
@@ -44,15 +43,6 @@ class _RechercheWidgetState extends State<RechercheWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)

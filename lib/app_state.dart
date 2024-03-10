@@ -39,25 +39,3 @@ class FFAppState extends ChangeNotifier {
   void clearALaUneCacheKey(String? uniqueKey) =>
       _aLaUneManager.clearRequest(uniqueKey);
 }
-
-LatLng? _latLngFromString(String? val) {
-  if (val == null) {
-    return null;
-  }
-  final split = val.split(',');
-  final lat = double.parse(split.first);
-  final lng = double.parse(split.last);
-  return LatLng(lat, lng);
-}
-
-void _safeInit(Function() initializeField) {
-  try {
-    initializeField();
-  } catch (_) {}
-}
-
-Future _safeInitAsync(Function() initializeField) async {
-  try {
-    await initializeField();
-  } catch (_) {}
-}

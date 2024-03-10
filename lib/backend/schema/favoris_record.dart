@@ -38,8 +38,8 @@ class FavorisRecord extends FirestoreRecord {
           ? parent.collection('favoris')
           : FirebaseFirestore.instance.collectionGroup('favoris');
 
-  static DocumentReference createDoc(DocumentReference parent) =>
-      parent.collection('favoris').doc();
+  static DocumentReference createDoc(DocumentReference parent, {String? id}) =>
+      parent.collection('favoris').doc(id);
 
   static Stream<FavorisRecord> getDocument(DocumentReference ref) =>
       ref.snapshots().map((s) => FavorisRecord.fromSnapshot(s));

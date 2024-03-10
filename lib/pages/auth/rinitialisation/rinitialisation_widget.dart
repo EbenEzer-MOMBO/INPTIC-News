@@ -7,7 +7,6 @@ import '/flutter_flow/flutter_flow_widgets.dart';
 import '/custom_code/actions/index.dart' as actions;
 import '/custom_code/widgets/index.dart' as custom_widgets;
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
@@ -15,10 +14,10 @@ import 'rinitialisation_model.dart';
 export 'rinitialisation_model.dart';
 
 class RinitialisationWidget extends StatefulWidget {
-  const RinitialisationWidget({Key? key}) : super(key: key);
+  const RinitialisationWidget({super.key});
 
   @override
-  _RinitialisationWidgetState createState() => _RinitialisationWidgetState();
+  State<RinitialisationWidget> createState() => _RinitialisationWidgetState();
 }
 
 class _RinitialisationWidgetState extends State<RinitialisationWidget> {
@@ -43,15 +42,6 @@ class _RinitialisationWidgetState extends State<RinitialisationWidget> {
 
   @override
   Widget build(BuildContext context) {
-    if (isiOS) {
-      SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle(
-          statusBarBrightness: Theme.of(context).brightness,
-          systemStatusBarContrastEnforced: true,
-        ),
-      );
-    }
-
     return GestureDetector(
       onTap: () => _model.unfocusNode.canRequestFocus
           ? FocusScope.of(context).requestFocus(_model.unfocusNode)
